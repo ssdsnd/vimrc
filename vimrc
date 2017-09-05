@@ -8,3 +8,4 @@ nnoremap <leader>sv :source $MYVIMRC<CR>
 
 " END .vimrc
 
+set paste
