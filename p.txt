@@ -35,3 +35,18 @@ def print_table(rows, f):
 		print(s, file=f)
 		if count in heights:
 			print('+' + '+'.join('-' * width for width in widths) + '+', file=f)
+
+
+def remove_colums(rows, columns):
+	checks = copy.deepcopy(rows)
+	header = checks[0]
+	remove_index = []
+	for c in columns:
+		if c in header:
+			remove_index.append(header.index(c))
+
+	print(remove_index)
+	for i in remove_index:
+		for row in checks:
+			del row[i]
+	return checks
