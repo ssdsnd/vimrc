@@ -1,0 +1,37 @@
+from itertools import *
+
+def print_table(rows, f):
+	#rows[2][4] = rows[2][4].replace(',', '\n')
+	header = rows[0]
+	data = rows[1:]
+
+	heights = [ max(c.count(',')+1 for c in row) for row in data ]
+	#print(heights, file=f)
+	
+	myrows = []
+	myrows.append(rows[0])
+	for rc, height in enumerate(heights):
+		row = data[rc]
+
+		if height == 0:
+			myrows.append(row)
+		else:
+			rr = []
+			for c in row:
+				rr.append(c.split(','))
+
+			for k in list(zip_longest(*rr)):
+				myrows.append(list([c if c else '' for c in k]))
+
+	widths = [ len(max(columns, key=len)) for columns in zip(*myrows) ]
+	print('+' + '+'.join('-' * width for width in widths) + '+', file=f)
+	print('|' + '|'.join('{0:{align}{width}}'.format(cdata, align='^', width=width) for width, cdata in zip(widths, header)) + '|', file=f)
+	print('+' + '+'.join('-' * width for width in widths) + '+', file=f)
+	heights = [sum(heights[0:i+1]) for i in range(len(heights))]
+
+	data = myrows[1:]
+	for count, row in enumerate(data, 1):
+		s = '|' + '|'.join('{0:{align}{width}}'.format(cdata, align='<', width=width) for width, cdata in zip(widths, row)) + '|'
+		print(s, file=f)
+		if count in heights:
+			print('+' + '+'.join('-' * width for width in widths) + '+', file=f)
